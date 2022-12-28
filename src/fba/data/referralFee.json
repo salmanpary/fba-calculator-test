@@ -1,0 +1,355 @@
+[{
+        "category": "Amazon Device Accessories",
+        "feepercent": 45,
+        "minfee": 0.30
+    },
+    {
+        "category": "Amazon Explore",
+        "feepercent": 30,
+        "minfee": 2.00
+    },
+    {
+        "category": "Automotive and Powersports",
+        "feepercent": 12,
+        "minfee": 0.30
+    },
+    {
+        "category": "Baby Products",
+        "fees1": [{
+                "minprice": 0.00,
+                "maxprice": 10.00,
+                "feepercent": 8
+            },
+            {
+                "minprice": 10.00,
+                "maxprice": false,
+                "feepercent": 15
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Backpacks, Handbags, and Luggage",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Base Equipment Power Tools",
+        "feepercent": 12,
+        "minfee": 0.30
+    },
+    {
+        "category": "Beauty, Health and Personal Care",
+        "fees1": [{
+                "minprice": 0,
+                "maxprice": 10.00,
+                "feepercent": 8
+            },
+            {
+                "minprice": 10.00,
+                "maxprice": false,
+                "feepercent": 15
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Business, Industrial, and Scientific Supplies",
+        "feepercent": 12,
+        "minfee": 0.30
+    },
+    {
+        "category": "Clothing and Accessories",
+        "feepercent": 17,
+        "minfee": 0.30
+    },
+    {
+        "category": "Collectible Coins",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 250.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 250.00,
+                "maxprice": 1000.00,
+                "feepercent": 10
+            },
+            {
+                "minprice": 1000.00,
+                "maxprice": false,
+                "feepercent": 6
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Compact Appliances",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 300.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 300.00,
+                "maxprice": false,
+                "feepercent": 8
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Computers",
+        "feepercent": 8,
+        "minfee": 0.30
+    },
+    {
+        "category": "Consumer Electronics",
+        "feepercent": 8,
+        "minfee": 0.30
+    },
+    {
+        "category": "Electronics Accessories",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 100.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 100.00,
+                "maxprice": false,
+                "feepercent": 8
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Entertainment Collectibles",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 100.00,
+                "feepercent": 20
+            },
+            {
+                "minprice": 100.00,
+                "maxprice": 1000.00,
+                "feepercent": 10
+            },
+            {
+                "minprice": 1000.00,
+                "maxprice": false,
+                "feepercent": 6
+            }
+        ]
+    },
+    {
+        "category": "Everything Else",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Eyewear",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Fine Art",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 100.00,
+                "feepercent": 20
+            },
+            {
+                "minprice": 100.00,
+                "maxprice": 1000.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 1000.00,
+                "maxprice": 5000.00,
+                "feepercent": 10
+            },
+            {
+                "minprice": 5000.00,
+                "maxprice": false,
+                "feepercent": 5
+            }
+        ],
+        "minfee": null
+    },
+    {
+        "category": "Footwear",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Furniture",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 200.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 200.00,
+                "maxprice": false,
+                "feepercent": 10
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Gift Cards",
+        "feepercent": 20,
+        "minfee": null
+    },
+    {
+        "category": "Grocery and Gourmet",
+        "fees1": [{
+                "minprice": 0.00,
+                "maxprice": 15.00,
+                "feepercent": 8
+            },
+            {
+                "minprice": 15.00,
+                "maxprice": false,
+                "feepercent": 15
+            }
+        ],
+        "minfee": null
+    },
+    {
+        "category": "Home and Kitchen",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Home and Kitchen",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Jewelry",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 250.00,
+                "feepercent": 20
+            },
+            {
+                "minprice": 250.00,
+                "maxprice": false,
+                "feepercent": 5
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Lawn and Garden",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Lawn Mowers and Snow Throwers",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 500.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 500.00,
+                "maxprice": false,
+                "feepercent": 8
+            }
+        ],
+        "minfee": 0.30
+    },
+    {
+        "category": "Mattresses",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Media - Books, DVD, Music, Software, Video",
+        "feepercent": 15,
+        "minfee": null
+    },
+    {
+        "category": "Musical Instruments and AV Production",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Office Products",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Pet Products",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Sports and Outdoors",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Sports Collectibles",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 100.00,
+                "feepercent": 15
+            },
+            {
+                "minprice": 100.00,
+                "maxprice": 1000.00,
+                "feepercent": 10
+            },
+            {
+                "minprice": 1000.00,
+                "maxprice": false,
+                "feepercent": 6
+            }
+        ],
+        "minfee": null
+    },
+    {
+        "category": "Tires",
+        "feepercent": 10,
+        "minfee": 0.30
+    },
+    {
+        "category": "Tools and Home Improvement",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Toys and Games",
+        "feepercent": 15,
+        "minfee": 0.30
+    },
+    {
+        "category": "Video Game Consoles",
+        "feepercent": 8,
+        "minfee": null
+    },
+    {
+        "category": "Video Games and Gaming Accessories",
+        "feepercent": 15,
+        "minfee": null
+    },
+    {
+        "category": "Watches",
+        "fees2": [{
+                "minprice": 0.00,
+                "maxprice": 1500.00,
+                "feepercent": 16
+            },
+            {
+                "minprice": 1500.00,
+                "maxprice": false,
+                "feepercent": 3
+            }
+        ],
+        "minfee": 0.30
+    }
+]
