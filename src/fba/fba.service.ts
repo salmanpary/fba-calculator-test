@@ -8,7 +8,7 @@ export class FbaService {
     //may have changes in collectible coin data
     const data = await this.fbaRepository.getReferralData();
     const requiredData = data.find((item) => item.category === category);
-    if(!requiredData){
+    if (!requiredData) {
       throw new NotFoundException('Category not found');
     }
     if (requiredData?.fees1) {
@@ -83,27 +83,58 @@ export class FbaService {
           }
         }
       }
-      if(requiredData.minfee){
-      
-      const referralFee = Math.max(requiredData.minfee, referralFee1);
-      const roundedReferralFee = Math.round(referralFee * 100) / 100;
-      return roundedReferralFee;
-      }else{
+      if (requiredData.minfee) {
+        const referralFee = Math.max(requiredData.minfee, referralFee1);
+        const roundedReferralFee = Math.round(referralFee * 100) / 100;
+        return roundedReferralFee;
+      } else {
         const roundedReferralFee = Math.round(referralFee1 * 100) / 100;
         return roundedReferralFee;
       }
     }
-    if(requiredData.minfee){
-    const referralFee = Math.max(
-      requiredData.minfee,
-      (requiredData.feepercent * price) / 100,
-    );
-    const roundedReferralFee = Math.round(referralFee * 100) / 100;
-    return roundedReferralFee;
-    }else{
+    if (requiredData.minfee) {
+      const referralFee = Math.max(
+        requiredData.minfee,
+        (requiredData.feepercent * price) / 100,
+      );
+      const roundedReferralFee = Math.round(referralFee * 100) / 100;
+      return roundedReferralFee;
+    } else {
       const referralFee = (requiredData.feepercent * price) / 100;
       const roundedReferralFee = Math.round(referralFee * 100) / 100;
       return roundedReferralFee;
     }
+  }
+  async CalculateFixedClosingFee() {
+    const data = await this.fbaRepository.getFixedClosingFeeData();
+    const requiredData = data.find(
+      (item) => item.plan === 'Individual Selling Plan',
+    );
+    if (!requiredData) {
+      throw new NotFoundException('Category not found');
+    }
+    const fixedClosingFee = requiredData.perItemPrice;
+    return fixedClosingFee;
+  }
+  async CalculateVariableClosingFee(category: string) {
+    const data = await this.fbaRepository.getVariableClosingFeeData();
+    const requiredData = data.category.includes(category);
+    if (!requiredData) {
+      return 0;
+    } else {
+      return data.fee;
+    }
+  }
+  async CalculateAmazonFee(category: string, price: number) {
+    const amazonFee =
+      (await this.CalculateReferralfee(category, price)) +
+      (await this.CalculateFixedClosingFee()) +
+      (await this.CalculateVariableClosingFee(category));
+    return {
+      referralFee: await this.CalculateReferralfee(category, price),
+      fixedClosingFee: await this.CalculateFixedClosingFee(),
+      variableClosingFee: await this.CalculateVariableClosingFee(category),
+      total: amazonFee,
+    };
   }
 }

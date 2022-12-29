@@ -1,0 +1,9 @@
+[
+    {
+        "plan":"Individual Selling Plan",
+        "perItemPrice":0.99
+    },{
+        "plan":"Professional Selling Plan",
+        "monthlyPrice":39.99
+    }
+]
