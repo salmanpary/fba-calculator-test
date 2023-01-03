@@ -1,0 +1,49 @@
+[{
+        "sizetier": "Small standard-size",
+        "unitweight": 1,
+        "length": 15,
+        "width": 12,
+        "height": 0.75,
+        "girthPlusLength": null
+    },
+    {
+        "sizetier": "Large standard-size",
+        "unitweight": 20,
+        "length": 18,
+        "width": 14,
+        "height": 8,
+        "girthPlusLength": null
+    },
+    {
+        "sizetier": "Small oversize",
+        "unitweight": 70,
+        "length": 60,
+        "width": 30,
+        "height": null,
+        "girthPlusLength": 130
+    },
+    {
+        "sizetier": "Medium oversize",
+        "unitweight": 150,
+        "length": 108,
+        "width": null,
+        "height": null,
+        "girthPlusLength": 130
+    },
+    {
+        "sizetier": "Large oversize",
+        "unitweight": 150,
+        "length": 108,
+        "width": null,
+        "height": null,
+        "girthPlusLength": 165
+    },
+    {
+        "sizetier": "Special oversize",
+        "unitweight": 150,
+        "length": 108,
+        "width": null,
+        "height": null,
+        "girthPlusLength": 165
+    }
+]

@@ -1,0 +1,392 @@
+{
+    "nonapparel": {
+        "fees": [{
+                "sizetier": "Small standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 3.22
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 3.40
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 3.58
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 3.77
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 3.86
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 4.08
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 4.24
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 4.75
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1,
+                "maxweight": 1.5,
+                "fee": 5.40
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1.5,
+                "maxweight": 2,
+                "fee": 5.69
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2,
+                "maxweight": 2.5,
+                "fee": 6.10
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2.5,
+                "maxweight": 3,
+                "fee": 6.39
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 3,
+                "maxweight": 20,
+                "fee": {
+                    "min": 7.17,
+                    "above": 3,
+                    "extra": 0.16,
+                    "per": 0.5
+                }
+            },
+            {
+                "sizetier": "Small oversize",
+                "minweight": 0,
+                "maxweight": 70,
+                "fee": {
+                    "min": 9.73,
+                    "above": 1,
+                    "extra": 0.42,
+                    "per": 1
+                }
+            },
+            {
+                "sizetier": "Medium oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 19.05,
+                    "extra": 0.42,
+                    "per": 1,
+                    "above": 1
+                }
+            },
+            {
+                "sizetier": "Large oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 89.98,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            },
+            {
+                "sizetier": "Special oversize",
+                "minweight": 150,
+                "maxweight": false,
+                "fee": {
+                    "min": 158.49,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            }
+        ]
+    },
+    "apparel": {
+        "fees": [{
+                "sizetier": "Small standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 3.43
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 3.58
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 3.87
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 4.15
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 4.43
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 4.63
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 4.84
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 5.32
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1,
+                "maxweight": 1.5,
+                "fee": 6.10
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1.5,
+                "maxweight": 2,
+                "fee": 6.37
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2,
+                "maxweight": 2.5,
+                "fee": 6.83
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2.5,
+                "maxweight": 3,
+                "fee": 7.05
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 3,
+                "maxweight": 20,
+                "fee": {
+                    "min": 7.17,
+                    "above": 3,
+                    "extra": 0.16,
+                    "per": 0.5
+                }
+            },
+            {
+                "sizetier": "Small oversize",
+                "minweight": 0,
+                "maxweight": 70,
+                "fee": {
+                    "min": 9.73,
+                    "above": 1,
+                    "extra": 0.42,
+                    "per": 1
+                }
+            },
+            {
+                "sizetier": "Medium oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 19.05,
+                    "extra": 0.42,
+                    "per": 1,
+                    "above": 1
+                }
+            },
+            {
+                "sizetier": "Large oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 89.98,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            },
+            {
+                "sizetier": "Special oversize",
+                "minweight": 150,
+                "maxweight": false,
+                "fee": {
+                    "min": 158.49,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            }
+        ]
+    },
+    "dangerous": {
+        "fees": [{
+                "sizetier": "Small standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 4.19
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 4.48
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 4.64
+            },
+            {
+                "sizetier": "Small standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 4.37
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0,
+                "maxweight": 0.25,
+                "fee": 4.64
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.25,
+                "maxweight": 0.5,
+                "fee": 4.89
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.5,
+                "maxweight": 0.75,
+                "fee": 5.03
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 0.75,
+                "maxweight": 1,
+                "fee": 5.34
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1,
+                "maxweight": 1.5,
+                "fee": 6.00
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 1.5,
+                "maxweight": 2,
+                "fee": 6.29
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2,
+                "maxweight": 2.5,
+                "fee": 6.56
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 2.5,
+                "maxweight": 3,
+                "fee": 6.85
+            },
+            {
+                "sizetier": "Large standard-size",
+                "minweight": 3,
+                "maxweight": 20,
+                "fee": {
+                    "min": 7.63,
+                    "above": 3,
+                    "extra": 0.16,
+                    "per": 0.5
+                }
+            },
+            {
+                "sizetier": "Small oversize",
+                "minweight": 0,
+                "maxweight": 70,
+                "fee": {
+                    "min": 10.48,
+                    "above": 1,
+                    "extra": 0.42,
+                    "per": 1
+                }
+            },
+            {
+                "sizetier": "Medium oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 19.92,
+                    "extra": 0.42,
+                    "per": 1,
+                    "above": 1
+                }
+            },
+            {
+                "sizetier": "Large oversize",
+                "minweight": 0,
+                "maxweight": 150,
+                "fee": {
+                    "min": 101.91,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            },
+            {
+                "sizetier": "Special oversize",
+                "minweight": 150,
+                "maxweight": false,
+                "fee": {
+                    "min": 158.49,
+                    "extra": 0.83,
+                    "per": 1,
+                    "above": 90
+                }
+            }
+        ]
+    }
+}

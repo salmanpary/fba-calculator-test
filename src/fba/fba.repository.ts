@@ -26,4 +26,44 @@ export class FbaRepository {
     const dataObj = JSON.parse(data);
     return dataObj;
   }
+  async getProductSizeTierData() {
+    const data = await readFile(
+      './src/fba/data/fulfillmentFees/sizeTier.json',
+      'utf8',
+    );
+    const dataObj = JSON.parse(data);
+    return dataObj;
+  }
+  async getFulfillmentFeeData() {
+    const data1 = await readFile(
+      './src/fba/data/fulfillmentFees/fulfillmentFee.json',
+      'utf8',
+    );
+    const data2 = await readFile(
+      './src/fba/data/fulfillmentFees/addOn.json',
+      'utf8',
+    );
+    const dataObj1 = JSON.parse(data1);
+    const dataObj2 = JSON.parse(data2);
+    return {
+      data1: dataObj1,
+      data2: dataObj2,
+    };
+  }
+  async getDimensionalWeightUsageData() {
+    const data = await readFile(
+      './src/fba/data/fulfillmentFees/dimensionalWeightUsage.json',
+      'utf8',
+    );
+    const dataObj = JSON.parse(data);
+    return dataObj;
+  }
+  async getApparelsDetails(){
+    const data = await readFile(
+      './src/fba/data/fulfillmentFees/apparel.json',
+      'utf8',
+    );
+    const dataObj = JSON.parse(data);
+    return dataObj;
+  }
 }

@@ -1,0 +1,26 @@
+[
+    {
+        "sizetier": "Small standard-size",
+        "unitweight": true
+    },
+    {
+        "sizetier": "Large standard-size",
+        "unitweight": false
+    },
+    {
+        "sizetier": "Small oversize",
+        "unitweight": false
+    },
+    {
+        "sizetier": "Medium oversize",
+        "unitweight": false
+    },
+    {
+        "sizetier": "Large oversize",
+        "unitweight": false
+    },
+    {
+        "sizetier": "Special oversize",
+        "unitweight": true
+    }
+]

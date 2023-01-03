@@ -20,7 +20,6 @@ export class FbaService {
         ) {
           feepercent = requiredData.fees1[i].feepercent;
         } else {
-          console.log('testing');
           feepercent =
             requiredData.fees1[requiredData.fees1.length - 1].feepercent;
         }
@@ -54,15 +53,15 @@ export class FbaService {
               ((price - requiredData.fees2[i].minprice) *
                 requiredData.fees2[i].feepercent) /
               100;
-            console.log(referralFee1);
+        
             for (let j = flag - 1; j >= 0; j--) {
-              console.log(j);
+          
               referralFee1 +=
                 ((requiredData.fees2[j].maxprice -
                   requiredData.fees2[j].minprice) *
                   requiredData.fees2[j].feepercent) /
                 100;
-              console.log(referralFee1);
+             
             }
           }
         } else if (
@@ -136,5 +135,291 @@ export class FbaService {
       variableClosingFee: await this.CalculateVariableClosingFee(category),
       total: amazonFee,
     };
+  }
+  async CalculateProductSizeTier(
+    weight: number,
+    length: number,
+    width: number,
+    height: number,
+    unit: string,
+  ) {
+    let girthPlusLength: number = 2 * (width + height) + length;
+    let lengthInInches: number;
+    let widthInInches: number;
+    let heightInInches: number;
+    if (unit === 'cm') {
+      lengthInInches = length / 2.54;
+      widthInInches = width / 2.54;
+      heightInInches = height / 2.54;
+    } else {
+      lengthInInches = length;
+      widthInInches = width;
+      heightInInches = height;
+    }
+    const data = await this.fbaRepository.getProductSizeTierData();
+    let requiredData: any;
+    let req;
+    requiredData = data.find((item) => {
+    
+      if (
+        weight <= item.unitweight &&
+        lengthInInches <= item.length &&
+        widthInInches <= item.width &&
+        heightInInches <= item.height &&
+        null === item.girthPlusLength
+      ) {
+        return item;
+      } else if (
+        weight <= item.unitweight &&
+        lengthInInches <= item.length &&
+        widthInInches <= item.width &&
+        null === item.height &&
+        girthPlusLength <= item.girthPlusLength
+      ) {
+        return item;
+      } else if (
+        weight <= item.unitweight &&
+        lengthInInches <= item.length &&
+        null === item.width &&
+        null === item.height &&
+        girthPlusLength <= item.girthPlusLength
+      ) {
+        return item;
+      } else if (
+        weight > 150 &&
+        lengthInInches > 108 &&
+        girthPlusLength > 165
+      ) {
+        return item;
+      }
+    });
+    return requiredData.sizetier;
+  }
+  async CalculateDetailsForFulfillment(
+    length: number,
+    width: number,
+    height: number,
+    weight: number,
+    unit: string,
+  ) {
+    const dimensionalWeightUsageDetails =
+      await this.fbaRepository.getDimensionalWeightUsageData();
+    const sizeTier = await this.CalculateProductSizeTier(
+      weight,
+      length,
+      width,
+      height,
+      unit,
+    );
+
+    const girth = 2 * (width + height);
+    const girthPlusLength = length + girth;
+    const volume = length * width * height;
+    let heightForDimensionalWeight: number;
+    let widthForDimensionalWeight: number;
+    let lengthInInches: number;
+    let widthInInches: number;
+    let heightInInches: number;
+    let girthInInches: number;
+    let girthPlusLengthInInches: number;
+    let volumeInCubicFeet: number;
+    let volumeRoundedToOneDecimal: number;
+    let dimensionalWeight: number;
+    let shippingWeight: number;
+    let weightforCalculation: number;
+    let weightforCalculation2: number;
+    let weightforCalculation3: number;
+    heightForDimensionalWeight = height;
+    widthForDimensionalWeight = width;
+    if (sizeTier.includes('oversize')) {
+      if (unit === 'in') {
+        if (height < 2 || !height) {
+          heightForDimensionalWeight = 2;
+        } else {
+          heightForDimensionalWeight = height;
+        
+        }
+        if (width < 2 || !width) {
+          widthForDimensionalWeight = 2;
+        } else {
+          widthForDimensionalWeight = width;
+        }
+      } else if (unit === 'cm') {
+        if (height / 2.54 < 2 || !height) {
+          heightForDimensionalWeight = 2;
+        } else {
+          heightForDimensionalWeight = height / 2.54;
+        }
+        if (width / 2.54 < 2 || !width) {
+          widthForDimensionalWeight = 2;
+        } else {
+          widthForDimensionalWeight = width / 2.54;
+        }
+      }
+    }
+    if (unit === 'in') {
+      lengthInInches = Math.round(length * 10) / 10;
+      widthInInches = Math.round(width * 10) / 10;
+      heightInInches = Math.round(height * 10) / 10;
+      girthInInches = Math.round(girth * 10) / 10;
+
+      girthPlusLengthInInches = Math.round(girthPlusLength * 10) / 10;
+      volumeInCubicFeet = volume / 1728;
+
+      volumeRoundedToOneDecimal = Math.round(volumeInCubicFeet * 10) / 10;
+      dimensionalWeight =
+        Math.round(
+          ((lengthInInches *
+            heightForDimensionalWeight *
+            widthForDimensionalWeight) /
+            139) *
+            100,
+        ) / 100;
+      const requiredData = dimensionalWeightUsageDetails.find((item) => {
+        if (item.sizetier === sizeTier) {
+          return item;
+        }
+      });
+      if (requiredData.unitweight) {
+        weightforCalculation = weight;
+        weightforCalculation2 = Math.round(weight * 10) / 10;
+      } else {
+        weightforCalculation = Math.max(weight, dimensionalWeight);
+        weightforCalculation2 =
+          Math.round(Math.max(weight, dimensionalWeight) * 10) / 10;
+        const temp = weightforCalculation.toString().split('.');
+
+        if (Number('.' + temp[1]) > 0.5) {
+          weightforCalculation3 = Number(temp[0]) + 1;
+        } else if (!temp[1]) {
+          weightforCalculation3 = Number(temp[0]);
+        } else {
+          weightforCalculation3 = Number(temp[0]) + 0.5;
+        }
+      }
+      if (weightforCalculation > 1) {
+        shippingWeight = Math.ceil(Math.max(weight, dimensionalWeight));
+      } else {
+        const inOunce = weightforCalculation * 16;
+        const inOunceRounded = Math.ceil(inOunce);
+        shippingWeight = inOunceRounded / 16;
+      }
+    } else if (unit === 'cm') {
+      lengthInInches = Math.round((length / 2.54) * 10) / 10;
+      widthInInches = Math.round((width / 2.54) * 10) / 10;
+      heightInInches = Math.round((height / 2.54) * 10) / 10;
+      girthInInches = Math.round((girth / 2.54) * 10) / 10;
+      girthPlusLengthInInches = Math.round((girthPlusLength / 2.54) * 10) / 10;
+      volumeInCubicFeet = volume / 28316.8466;
+      volumeRoundedToOneDecimal = Math.round(volumeInCubicFeet * 10) / 10;
+      dimensionalWeight =
+        Math.round(
+          ((lengthInInches *
+            heightForDimensionalWeight *
+            widthForDimensionalWeight) /
+            139) *
+            100,
+        ) / 100;
+      const requiredData = dimensionalWeightUsageDetails.find((item) => {
+        if (item.sizetier === sizeTier) {
+          return item;
+        }
+      });
+      if (requiredData.unitweight) {
+        weightforCalculation = weight;
+      } else {
+        weightforCalculation = Math.max(weight, dimensionalWeight);
+        weightforCalculation2 =
+          Math.round(Math.max(weight, dimensionalWeight) * 10) / 10;
+        const temp = weightforCalculation.toString().split('.');
+
+        if (Number('.' + temp[1]) > 0.5) {
+          weightforCalculation3 = Number(temp[0]) + 1;
+        } else if (Number('.' + temp[1]) === 0) {
+          weightforCalculation3 = Number(temp[0]);
+        } else {
+          weightforCalculation3 = Number(temp[0]) + 0.5;
+        }
+      }
+      if (weightforCalculation > 1) {
+        shippingWeight = Math.ceil(Math.max(weight, dimensionalWeight));
+      } else {
+        const inOunce = weightforCalculation * 16;
+        const inOunceRounded = Math.ceil(inOunce);
+        shippingWeight = inOunceRounded / 16;
+      }
+    }
+    return {
+      length: lengthInInches,
+      width: widthInInches,
+      height: heightInInches,
+      weight: weight,
+      girth: girthInInches,
+      girthPlusLength: girthPlusLengthInInches,
+      volume: volumeRoundedToOneDecimal,
+      dimensionalWeight: dimensionalWeight,
+      sizeTier: sizeTier,
+      shippingWeight: shippingWeight,
+      weightforCalculation3: weightforCalculation3,
+    };
+  }
+  async CalculateFulfillmentFee(
+    length: number,
+    width: number,
+    height: number,
+    weight: number,
+    unit: string,
+    category: string,
+  ) {
+    const neededDataForCalculation = await this.CalculateDetailsForFulfillment(
+      length,
+      width,
+      height,
+      weight,
+      unit,
+    );
+    const shippingWeight = neededDataForCalculation.shippingWeight;
+
+    const sizeTier = neededDataForCalculation.sizeTier;
+    const weightforCalculation3 =
+      neededDataForCalculation.weightforCalculation3;
+
+    const apparelData = await this.fbaRepository.getApparelsDetails();
+    const datas = await this.fbaRepository.getFulfillmentFeeData();
+    const data1 = datas.data1;
+    let key: string;
+    if (apparelData.includes(category)) {
+      key = 'apparel';
+    } else {
+      key = 'nonapparel';
+    }
+    const requiredData1 = data1[key].fees.find((item) => {
+      if (item.sizetier === sizeTier) {
+        if (
+          shippingWeight > item.minweight &&
+          shippingWeight <= item.maxweight
+        ) {
+          return item;
+        } else if (shippingWeight > 150) {
+          return data1[key].fees[data1.nonapparel.fees.length - 1];
+        }
+      }
+    });
+
+    if (typeof requiredData1.fee === 'number') {
+  
+      return requiredData1.fee;
+    } else if (typeof requiredData1.fee === 'object') {
+      if (weightforCalculation3 <= requiredData1.fee.above) {
+        return requiredData1.fee.min;
+      } else {
+        const difference = weightforCalculation3 - requiredData1.fee.above;
+  
+        const howmanytimes = Math.trunc(difference / requiredData1.fee.per);
+        const fee =
+          requiredData1.fee.min + howmanytimes * requiredData1.fee.extra;
+        return fee;
+      }
+    }
   }
 }
