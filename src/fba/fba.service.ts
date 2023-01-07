@@ -398,7 +398,8 @@ export class FbaService {
     } else {
       key = 'nonapparel';
     }
-    const requiredData1 = data1[key].fees.find((item) => {
+    //change to nonapparel for correct value
+    const requiredData1 = data1["nonapparel"].fees.find((item) => {
       if (item.sizetier === sizeTier) {
         if (
           shippingWeight > item.minweight &&
@@ -485,6 +486,7 @@ export class FbaService {
     if (fixed < 0.01) {
       fixed = totalMontlyStorageFee;
     }
+    console.log(totalMontlyStorageFee/ monthlyUnitsSold);
     storageCostPerUnitSold =
       Math.round((totalMontlyStorageFee / monthlyUnitsSold) * 100) / 100;
     if (storageCostPerUnitSold < 0.01) {
