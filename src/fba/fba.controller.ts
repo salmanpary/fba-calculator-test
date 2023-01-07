@@ -51,7 +51,53 @@ export class FbaController {
       body.height,
       body.weight,
       body.unit,
-      body.category
+      body.category,
+      body.addOn,
+      body.shippingToAmazon
+    )
+  }
+  @Post ('/test5')
+  async test5(@Body() body: any) {
+    return this.fbaService.CalculateStorageFee(
+      body.length,
+      body.width,
+      body.height,
+      body.weight,
+      body.unit,
+      body.monthStart,
+      body.monthEnd,
+      body.averageInventoryStored,
+      body.monthlyUnitsSold
+    )
+  }
+  @Post('/test6')
+  async test6(@Body() body: any) {
+    return this.fbaService.CalculateOtherCosts(
+      body.costsOfGoodsSold,
+      body.miscCost,
+    )
+  }
+  @Post('/test7')
+  async test7(@Body() body: any) {
+    return this.fbaService.CalculateAllDetails(
+      body.length,
+      body.width,
+      body.height,
+      body.weight,
+      body.unit,
+      body.price,
+      body.category,
+      body.addOn,
+      body.shippingToAmazon,
+      body.monthStart,
+      body.monthEnd,
+      body.averageInventoryStored,
+      body.monthlyUnitsSold,
+      body.costsOfGoodsSold,
+      body.miscCost,
+      body.estimatedSales,
+      
+
     )
   }
 }

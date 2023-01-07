@@ -7,7 +7,8 @@ export class FbaService {
   async CalculateReferralfee(category: string, price: number) {
     //may have changes in collectible coin data
     const data = await this.fbaRepository.getReferralData();
-    const requiredData = data.find((item) => item.category === category);
+
+    const requiredData =await data.find((item) => item.category === category);
     if (!requiredData) {
       throw new NotFoundException('Category not found');
     }
@@ -53,15 +54,13 @@ export class FbaService {
               ((price - requiredData.fees2[i].minprice) *
                 requiredData.fees2[i].feepercent) /
               100;
-        
+
             for (let j = flag - 1; j >= 0; j--) {
-          
               referralFee1 +=
                 ((requiredData.fees2[j].maxprice -
                   requiredData.fees2[j].minprice) *
                   requiredData.fees2[j].feepercent) /
                 100;
-             
             }
           }
         } else if (
@@ -106,6 +105,7 @@ export class FbaService {
   }
   async CalculateFixedClosingFee() {
     const data = await this.fbaRepository.getFixedClosingFeeData();
+  
     const requiredData = data.find(
       (item) => item.plan === 'Individual Selling Plan',
     );
@@ -160,7 +160,6 @@ export class FbaService {
     let requiredData: any;
     let req;
     requiredData = data.find((item) => {
-    
       if (
         weight <= item.unitweight &&
         lengthInInches <= item.length &&
@@ -223,7 +222,7 @@ export class FbaService {
     let girthInInches: number;
     let girthPlusLengthInInches: number;
     let volumeInCubicFeet: number;
-    let volumeRoundedToOneDecimal: number;
+    let volumeRoundedToTwoDecimal: number;
     let dimensionalWeight: number;
     let shippingWeight: number;
     let weightforCalculation: number;
@@ -237,7 +236,6 @@ export class FbaService {
           heightForDimensionalWeight = 2;
         } else {
           heightForDimensionalWeight = height;
-        
         }
         if (width < 2 || !width) {
           widthForDimensionalWeight = 2;
@@ -266,7 +264,7 @@ export class FbaService {
       girthPlusLengthInInches = Math.round(girthPlusLength * 10) / 10;
       volumeInCubicFeet = volume / 1728;
 
-      volumeRoundedToOneDecimal = Math.round(volumeInCubicFeet * 10) / 10;
+      volumeRoundedToTwoDecimal = Math.round(volumeInCubicFeet * 100) / 100;
       dimensionalWeight =
         Math.round(
           ((lengthInInches *
@@ -311,7 +309,7 @@ export class FbaService {
       girthInInches = Math.round((girth / 2.54) * 10) / 10;
       girthPlusLengthInInches = Math.round((girthPlusLength / 2.54) * 10) / 10;
       volumeInCubicFeet = volume / 28316.8466;
-      volumeRoundedToOneDecimal = Math.round(volumeInCubicFeet * 10) / 10;
+      volumeRoundedToTwoDecimal = Math.round(volumeInCubicFeet * 100) / 100;
       dimensionalWeight =
         Math.round(
           ((lengthInInches *
@@ -356,11 +354,12 @@ export class FbaService {
       weight: weight,
       girth: girthInInches,
       girthPlusLength: girthPlusLengthInInches,
-      volume: volumeRoundedToOneDecimal,
+      volume: volumeRoundedToTwoDecimal,
       dimensionalWeight: dimensionalWeight,
       sizeTier: sizeTier,
       shippingWeight: shippingWeight,
       weightforCalculation3: weightforCalculation3,
+      volume2: volumeInCubicFeet,
     };
   }
   async CalculateFulfillmentFee(
@@ -370,6 +369,8 @@ export class FbaService {
     weight: number,
     unit: string,
     category: string,
+    addon: string[],
+    shippingToAmazon: number,
   ) {
     const neededDataForCalculation = await this.CalculateDetailsForFulfillment(
       length,
@@ -386,8 +387,12 @@ export class FbaService {
 
     const apparelData = await this.fbaRepository.getApparelsDetails();
     const datas = await this.fbaRepository.getFulfillmentFeeData();
+    const addOnData = await this.fbaRepository.getAddOnData();
+
     const data1 = datas.data1;
     let key: string;
+    let fbaFulfillmentFee: number;
+    let addOnFee: number = 0;
     if (apparelData.includes(category)) {
       key = 'apparel';
     } else {
@@ -407,19 +412,155 @@ export class FbaService {
     });
 
     if (typeof requiredData1.fee === 'number') {
-  
-      return requiredData1.fee;
+      fbaFulfillmentFee = requiredData1.fee;
     } else if (typeof requiredData1.fee === 'object') {
       if (weightforCalculation3 <= requiredData1.fee.above) {
-        return requiredData1.fee.min;
+        fbaFulfillmentFee = requiredData1.fee.min;
       } else {
         const difference = weightforCalculation3 - requiredData1.fee.above;
-  
+
         const howmanytimes = Math.trunc(difference / requiredData1.fee.per);
         const fee =
           requiredData1.fee.min + howmanytimes * requiredData1.fee.extra;
-        return fee;
+        fbaFulfillmentFee = fee;
       }
     }
+    if (addon.length > 0) {
+      addOnFee = addon.reduce((total, curr) => {
+        const requiredData2 = addOnData.find((item) => {
+          if (item.addOn === curr) {
+            return item;
+          }
+        });
+        return total + requiredData2.price;
+      }, 0);
+    }
+    return {
+      fbaFulfillmentFee: fbaFulfillmentFee,
+      addOnFee: Math.round(addOnFee * 100) / 100,
+      shippingToAmazon: shippingToAmazon,
+      totalFulfillmentFee:
+        Math.round((fbaFulfillmentFee + shippingToAmazon + addOnFee) * 100) /
+        100,
+    };
+  }
+  async CalculateStorageFee(
+    length: number,
+    width: number,
+    height: number,
+    weight: number,
+    unit: string,
+    monthStart: string,
+    monthEnd: string,
+    averageInventoryStored: number,
+    monthlyUnitsSold: number,
+  ) {
+    const neededDataForCalculation = await this.CalculateDetailsForFulfillment(
+      length,
+      width,
+      height,
+      weight,
+      unit,
+    );
+    const sizeTier = neededDataForCalculation.sizeTier;
+    const volume = neededDataForCalculation.volume2;
+    const data = await this.fbaRepository.getMontlyChargeData();
+    let sizeTierCategory: string;
+    let storageCostPerUnitSold: number;
+    if (sizeTier.includes('standard-size')) {
+      sizeTierCategory = 'standardSize';
+    } else if (sizeTier.includes('oversize')) {
+      sizeTierCategory = 'overSize';
+    }
+    const requiredData = data.nondangerous.details.find((item) => {
+      if (item.monthStart === monthStart && item.monthEnd === monthEnd) {
+        return item;
+      }
+    });
+    const storageFee = requiredData[sizeTierCategory] * volume;
+    const roundedStorageFee = Math.round(storageFee * 100) / 100;
+    const totalMontlyStorageFee = storageFee * averageInventoryStored;
+ 
+    let fixed = Math.round(totalMontlyStorageFee * 100) / 100;
+    if (fixed < 0.01) {
+      fixed = totalMontlyStorageFee;
+    }
+    storageCostPerUnitSold =
+      Math.round((totalMontlyStorageFee / monthlyUnitsSold) * 100) / 100;
+    if (storageCostPerUnitSold < 0.01) {
+      storageCostPerUnitSold = totalMontlyStorageFee / monthlyUnitsSold;
+    }
+
+    return {
+      monthlyStorageFeePerUnit:roundedStorageFee,
+      totalMontlyStorageFee: fixed,
+      storageCostPerUnitSold: storageCostPerUnitSold,
+    };
+  }
+  async CalculateOtherCosts(costsOfGoodsSold: number, miscCost: number) {
+    const rounded = Math.round((costsOfGoodsSold + miscCost) * 100) / 100;
+    return {
+      costsOfGoodsSold: costsOfGoodsSold,
+      miscCost: miscCost,
+      totalCostOfGoodsSold: rounded,
+    };
+  }
+  async CalculateAllDetails(
+    length: number,
+    width: number,
+    height: number,
+    weight: number,
+    unit: string,
+    price: number,
+    category: string,
+    addon: string[],
+    shippingToAmazon: number,
+    monthStart: string,
+    monthEnd: string,
+    averageInventoryStored: number,
+    monthlyUnitsSold: number,
+    costsOfGoodsSold: number,
+
+    miscCost: number,
+    estimatedSales: number
+  ) {
+   const amazonFee= await this.CalculateAmazonFee(category,price);
+    const fulfillmentFee = await this.CalculateFulfillmentFee(
+      length,
+      width,
+      height,
+      weight,
+      unit,
+      category,
+      addon,
+      shippingToAmazon,
+    );
+    const storageFee = await this.CalculateStorageFee(
+      length,
+      width,
+      height,
+      weight,
+      unit,
+      monthStart,
+      monthEnd,
+      averageInventoryStored,
+      monthlyUnitsSold,
+    );
+    const otherCost = await this.CalculateOtherCosts(
+      costsOfGoodsSold,
+      miscCost,
+    );
+    const costPerUnit= Math.round((amazonFee.total+fulfillmentFee.totalFulfillmentFee+storageFee.storageCostPerUnitSold+otherCost.totalCostOfGoodsSold)*100)/100;
+    const profit=Math.round(((price-costPerUnit)*estimatedSales)*100)/100;
+    const netMargin=Math.round((profit/(price*estimatedSales))*10000)/100;
+    return {
+      amazonFee:amazonFee,
+      fulfillmentFee: fulfillmentFee,
+      storageFee: storageFee,
+      otherCost: otherCost,
+      costPerUnit:costPerUnit,
+      profit:profit,
+      netMargin:netMargin
+    };
   }
 }

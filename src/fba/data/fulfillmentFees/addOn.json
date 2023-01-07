@@ -1,7 +1,6 @@
-[
-    {
+[{
         "addOn": "Inventory placement",
-        "price": 0.40
+        "price": 0.30
     },
     {
         "addOn": "Opaque bagging",
@@ -17,6 +16,10 @@
     },
     {
         "addOn": "Bagging",
-        "Bubble wrap": 0.80
+        "price": 0.70
+    },
+    {
+        "addOn": "Bubble wrap",
+        "price": 0.80
     }
 ]

@@ -50,6 +50,14 @@ export class FbaRepository {
       data2: dataObj2,
     };
   }
+  async getAddOnData() {
+    const data = await readFile(
+      './src/fba/data/fulfillmentFees/addOn.json',
+      'utf8',
+    );
+    const dataObj = JSON.parse(data);
+    return dataObj;
+  }
   async getDimensionalWeightUsageData() {
     const data = await readFile(
       './src/fba/data/fulfillmentFees/dimensionalWeightUsage.json',
@@ -61,6 +69,14 @@ export class FbaRepository {
   async getApparelsDetails(){
     const data = await readFile(
       './src/fba/data/fulfillmentFees/apparel.json',
+      'utf8',
+    );
+    const dataObj = JSON.parse(data);
+    return dataObj;
+  }
+  async getMontlyChargeData() {
+    const data = await readFile(
+      './src/fba/data/storageFees/monthlyCharge.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
