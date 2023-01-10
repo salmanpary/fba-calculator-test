@@ -388,6 +388,7 @@ export class FbaService {
       weight,
       unit,
     );
+    console.log(neededDataForCalculation);
     const shippingWeight = neededDataForCalculation.shippingWeight;
 
     const sizeTier = neededDataForCalculation.sizeTier;
@@ -420,14 +421,16 @@ export class FbaService {
         }
       }
     });
-
+console.log(requiredData1)
     if (typeof requiredData1.fee === 'number') {
       fbaFulfillmentFee = requiredData1.fee;
     } else if (typeof requiredData1.fee === 'object') {
-      if (weightforCalculation3 <= requiredData1.fee.above) {
+      //put weightForCalculation 3 if needed
+      if (shippingWeight <= requiredData1.fee.above) {
         fbaFulfillmentFee = requiredData1.fee.min;
       } else {
-        const difference = weightforCalculation3 - requiredData1.fee.above;
+        //put weightForCalculation 3 if needed
+        const difference = shippingWeight - requiredData1.fee.above;
 
         const howmanytimes = Math.trunc(difference / requiredData1.fee.per);
         const fee =
