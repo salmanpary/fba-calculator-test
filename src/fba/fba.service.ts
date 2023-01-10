@@ -19,6 +19,7 @@ export class FbaService {
     if (!requiredData) {
       throw new NotFoundException('Category not found');
     }
+    
     if (requiredData?.fees1) {
       let feepercent: number;
       for (let i = 0; i < requiredData.fees1.length; i++) {
@@ -27,6 +28,7 @@ export class FbaService {
           price <= requiredData.fees1[i].maxprice
         ) {
           feepercent = requiredData.fees1[i].feepercent;
+          break;
         } else {
           feepercent =
             requiredData.fees1[requiredData.fees1.length - 1].feepercent;
