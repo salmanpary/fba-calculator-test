@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { FbaRepository } from './fba.repository';
 import { NotFoundException } from '@nestjs/common';
+import { referralDto } from './dto/referral.dto';
+import { fixedClosingDTO } from './dto/fixedClosing.dto';
+import { sizeTierDto } from './dto/sizeTier.dto';
+import { dimensionalWeightDTO } from './dto/dimensionalWeight.dto';
+import { nonApparelFeesDTO } from './dto/nonApparelFees.dto';
+import { addOnDto } from './dto/addOn.dto';
+import { monthlyChargeDto } from './dto/monthlyCharge.dto';
 @Injectable()
 export class FbaService {
   constructor(public fbaRepository: FbaRepository) {}
@@ -8,7 +15,7 @@ export class FbaService {
     //may have changes in collectible coin data
     const data = await this.fbaRepository.getReferralData();
 
-    const requiredData =await data.find((item) => item.category === category);
+    const requiredData =await data.find((item:referralDto) => item.category === category);
     if (!requiredData) {
       throw new NotFoundException('Category not found');
     }
@@ -107,7 +114,7 @@ export class FbaService {
     const data = await this.fbaRepository.getFixedClosingFeeData();
   
     const requiredData = data.find(
-      (item) => item.plan === 'Individual Selling Plan',
+      (item:fixedClosingDTO) => item.plan === 'Individual Selling Plan',
     );
     if (!requiredData) {
       throw new NotFoundException('Category not found');
@@ -126,9 +133,9 @@ export class FbaService {
   }
   async CalculateAmazonFee(category: string, price: number) {
     const amazonFee =
-      (await this.CalculateReferralfee(category, price)) +
+    Math.round (( (await this.CalculateReferralfee(category, price)) +
       (await this.CalculateFixedClosingFee()) +
-      (await this.CalculateVariableClosingFee(category));
+      (await this.CalculateVariableClosingFee(category)))*100)/100;
     return {
       referralFee: await this.CalculateReferralfee(category, price),
       fixedClosingFee: await this.CalculateFixedClosingFee(),
@@ -159,7 +166,7 @@ export class FbaService {
     const data = await this.fbaRepository.getProductSizeTierData();
     let requiredData: any;
     let req;
-    requiredData = data.find((item) => {
+    requiredData = data.find((item:sizeTierDto) => {
       if (
         weight <= item.unitweight &&
         lengthInInches <= item.length &&
@@ -273,7 +280,7 @@ export class FbaService {
             139) *
             100,
         ) / 100;
-      const requiredData = dimensionalWeightUsageDetails.find((item) => {
+      const requiredData = dimensionalWeightUsageDetails.find((item:dimensionalWeightDTO) => {
         if (item.sizetier === sizeTier) {
           return item;
         }
@@ -369,8 +376,8 @@ export class FbaService {
     weight: number,
     unit: string,
     category: string,
-    addon: string[],
-    shippingToAmazon: number,
+    addon: string[]=[],
+    shippingToAmazon: number=0,
   ) {
     const neededDataForCalculation = await this.CalculateDetailsForFulfillment(
       length,
@@ -399,7 +406,7 @@ export class FbaService {
       key = 'nonapparel';
     }
     //change to nonapparel for correct value
-    const requiredData1 = data1["nonapparel"].fees.find((item) => {
+    const requiredData1 = data1["nonapparel"].fees.find((item:nonApparelFeesDTO) => {
       if (item.sizetier === sizeTier) {
         if (
           shippingWeight > item.minweight &&
@@ -428,7 +435,7 @@ export class FbaService {
     }
     if (addon.length > 0) {
       addOnFee = addon.reduce((total, curr) => {
-        const requiredData2 = addOnData.find((item) => {
+        const requiredData2 = addOnData.find((item:addOnDto) => {
           if (item.addOn === curr) {
             return item;
           }
@@ -451,10 +458,10 @@ export class FbaService {
     height: number,
     weight: number,
     unit: string,
-    monthStart: string,
-    monthEnd: string,
-    averageInventoryStored: number,
-    monthlyUnitsSold: number,
+    monthStart: string="jan",
+    monthEnd: string="sep",
+    averageInventoryStored: number=1,
+    monthlyUnitsSold: number=1,
   ) {
     const neededDataForCalculation = await this.CalculateDetailsForFulfillment(
       length,
@@ -473,7 +480,7 @@ export class FbaService {
     } else if (sizeTier.includes('oversize')) {
       sizeTierCategory = 'overSize';
     }
-    const requiredData = data.nondangerous.details.find((item) => {
+    const requiredData = data.nondangerous.details.find((item:monthlyChargeDto) => {
       if (item.monthStart === monthStart && item.monthEnd === monthEnd) {
         return item;
       }
@@ -486,7 +493,6 @@ export class FbaService {
     if (fixed < 0.01) {
       fixed = totalMontlyStorageFee;
     }
-    console.log(totalMontlyStorageFee/ monthlyUnitsSold);
     storageCostPerUnitSold =
       Math.round((totalMontlyStorageFee / monthlyUnitsSold) * 100) / 100;
     if (storageCostPerUnitSold < 0.01) {
@@ -499,7 +505,7 @@ export class FbaService {
       storageCostPerUnitSold: storageCostPerUnitSold,
     };
   }
-  async CalculateOtherCosts(costsOfGoodsSold: number, miscCost: number) {
+  async CalculateOtherCosts(costsOfGoodsSold: number=0, miscCost: number=0) {
     const rounded = Math.round((costsOfGoodsSold + miscCost) * 100) / 100;
     return {
       costsOfGoodsSold: costsOfGoodsSold,
@@ -515,16 +521,16 @@ export class FbaService {
     unit: string,
     price: number,
     category: string,
-    addon: string[],
-    shippingToAmazon: number,
-    monthStart: string,
-    monthEnd: string,
-    averageInventoryStored: number,
-    monthlyUnitsSold: number,
-    costsOfGoodsSold: number,
+    addon?: string[],
+    shippingToAmazon?: number,
+    monthStart?: string,
+    monthEnd?: string,
+    averageInventoryStored?: number,
+    monthlyUnitsSold?: number,
+    costsOfGoodsSold?: number,
 
-    miscCost: number,
-    estimatedSales: number
+    miscCost?: number,
+    estimatedSales: number=1
   ) {
    const amazonFee= await this.CalculateAmazonFee(category,price);
     const fulfillmentFee = await this.CalculateFulfillmentFee(
