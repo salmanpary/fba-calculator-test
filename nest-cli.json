@@ -6,10 +6,8 @@
     "assets": [
       {
         "include": "../src/fba/data",
-        "outDir": "dist/public/",
-        "watchAssets": true
+        "outDir": "dist/public/"
       }
-    ],
-    "watchAssets": true
+    ]
   }
 }
