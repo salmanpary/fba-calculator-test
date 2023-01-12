@@ -1,10 +1,11 @@
 import { readFile } from 'fs/promises';
 import { Injectable } from '@nestjs/common';
+import { join } from 'path';
 @Injectable()
 export class FbaRepository {
   async getReferralData() {
     const data = await readFile(
-      './dist/public/fba/data/amazonFees/referralFee.json',
+      join(__dirname, '..', 'public') + '/fba/data/amazonFees/referralFee.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -12,7 +13,7 @@ export class FbaRepository {
   }
   async getFixedClosingFeeData() {
     const data = await readFile(
-      './dist/public/fba/data/amazonFees/fixedClosingFee.json',
+      join(__dirname, '..', 'public') + '/fba/data/amazonFees/fixedClosingFee.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -20,7 +21,7 @@ export class FbaRepository {
   }
   async getVariableClosingFeeData() {
     const data = await readFile(
-      './dist/public/fba/data/amazonFees/variableClosingFee.json',
+      join(__dirname, '..', 'public') + '/fba/data/amazonFees/variableClosingFee.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -28,7 +29,7 @@ export class FbaRepository {
   }
   async getProductSizeTierData() {
     const data = await readFile(
-      './dist/public/fba/data/fulfillmentFees/sizeTier.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/sizeTier.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -36,11 +37,11 @@ export class FbaRepository {
   }
   async getFulfillmentFeeData() {
     const data1 = await readFile(
-      './dist/public/fba/data/fulfillmentFees/fulfillmentFee.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/fulfillmentFee.json',
       'utf8',
     );
     const data2 = await readFile(
-      './dist/public/fba/data/fulfillmentFees/addOn.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/addOn.json',
       'utf8',
     );
     const dataObj1 = JSON.parse(data1);
@@ -52,7 +53,7 @@ export class FbaRepository {
   }
   async getAddOnData() {
     const data = await readFile(
-      './dist/public/fba/data/fulfillmentFees/addOn.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/addOn.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -60,15 +61,15 @@ export class FbaRepository {
   }
   async getDimensionalWeightUsageData() {
     const data = await readFile(
-      './dist/public/fba/data/fulfillmentFees/dimensionalWeightUsage.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/dimensionalWeightUsage.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
     return dataObj;
   }
-  async getApparelsDetails(){
+  async getApparelsDetails() {
     const data = await readFile(
-      './dist/public/fba/data/fulfillmentFees/apparel.json',
+      join(__dirname, '..', 'public') + '/fba/data/fulfillmentFees/apparel.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
@@ -76,7 +77,7 @@ export class FbaRepository {
   }
   async getMontlyChargeData() {
     const data = await readFile(
-      './dist/public/fba/data/storageFees/monthlyCharge.json',
+      join(__dirname, '..', 'public') + '/fba/data/storageFees/monthlyCharge.json',
       'utf8',
     );
     const dataObj = JSON.parse(data);
