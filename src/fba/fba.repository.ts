@@ -9,7 +9,7 @@ export class FbaRepository {
     return dataObj;
   }
   async getFixedClosingFeeData() {
-    const data = await readFile(join(__dirname, '..', 'public','fba','data','amazonFees','fixedClosingFee.json'),
+    const data = await readFile(join(__dirname, '..', 'public','fba','data','amazonFees','fixedClosingfee.json'),
       'utf8',
     );
     const dataObj = JSON.parse(data);
