@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class FbaRepository {
   async getReferralData() {
+    console.log(process.cwd())
     const data = await readFile('./src/fba/data/amazonFees/referralFee.json', 'utf8');
     const dataObj = JSON.parse(data);
     return dataObj;
